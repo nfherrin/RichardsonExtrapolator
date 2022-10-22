@@ -31,6 +31,7 @@ CONTAINS
 
     READ(21,*)t_char,rho
     READ(21,*)t_char,data_size
+    IF(data_size .LT. 3)STOP 'Richardson extrapolation requires at least 3 data points! Less than that given'
     ALLOCATE(indata(data_size),rich_results(data_size))
     indata=0.0
     rich_results=0.0

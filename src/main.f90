@@ -9,7 +9,7 @@ PROGRAM richardson_extrapolator
 
   CALL read_input_file()
 
-  CALL compute_rich()
+  CALL compute_rich_rho()
 
   CALL output_rich()
 
