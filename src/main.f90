@@ -5,6 +5,12 @@ PROGRAM richardson_extrapolator
   USE richardson_module
   IMPLICIT NONE
 
-  WRITE(*,*)'hello world'
+  CALL read_cmd_args()
+
+  CALL read_input_file()
+
+  CALL compute_rich()
+
+  CALL output_rich()
 
 ENDPROGRAM richardson_extrapolator
