@@ -9,7 +9,12 @@ CONTAINS
   SUBROUTINE output_rich()
     INTEGER :: i
 
+    WRITE(*,'(A)')""
     WRITE(*,'(A)')'Extrapolation successful for at least 1 point!'
+    WRITE(*,'(A)')"Note that if the later extrapolation results aren't close..."
+    WRITE(*,'(A)')"...then the input data may be outside the asymptotic region"
+    WRITE(*,'(A)')"Note that Richard Extrapolation is not valid outside the asymptotic region"
+    WRITE(*,'(A)')""
     WRITE(*,'(A)')'----------------------------------------------'
     WRITE(*,'(A)')'   Extrapolation Result  | Data Points Used'
     DO i=1,data_size
