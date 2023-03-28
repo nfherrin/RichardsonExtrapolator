@@ -7,5 +7,5 @@ MODULE globals
 
   INTEGER :: data_size
 
-  REAL(8),ALLOCATABLE :: indata(:),rich_results(:)
+  REAL(8),ALLOCATABLE :: indata(:),rich_results(:),p_results(:)
 ENDMODULE globals

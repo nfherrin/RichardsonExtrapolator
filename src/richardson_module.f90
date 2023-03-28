@@ -17,6 +17,7 @@ CONTAINS
         valid_p=.TRUE.
         p=LOG(p)/LOG(rho)
         rich_results(i)=(indata(i)-rho**p*indata(i-1))/(1.0D0-rho**p)
+        p_results(i)=p
       ENDIF
     ENDDO
     IF(.NOT. valid_p)STOP 'No real p values computed. System is likely not in asymptotic region.'
