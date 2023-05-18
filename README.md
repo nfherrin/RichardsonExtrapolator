@@ -1,4 +1,11 @@
 # RichardsonExtrapolator
-A simple code to perform Richardson Extrapolation.
-Current use only supports a specified rho value (ratio between x values) and only uses three data points at a time.
-There is a plan to add a more general version for a user who includes a list of x and y values.
+A simple code to perform 1D Richardson Extrapolation.
+This solves the extrapolation to $f(x_0)$ given a set of $x_i$ and $f_i$ values.
+
+There are two ways to use this code. First, if it is known that $(x_i-x_0)=\rho(x_{i+1}-x_0)\forall i$ (that is to say, the ratio of the points' progression to or from the goal point is known and constant for all $i$) then the known $\rho\neq 0$ value and a list of $f_i$ values can be provided and the extrapolation performed.
+This is seen in example `equal_space_example.txt`, and is recommended if possible.
+
+Alternatively, if the spacing between the points is not constant, then a list of $x_i$ and $f_i$ pairs can be given (in order of $x_i$ furthest from $x_0$ to closest to $x_0$).
+Additionally, the desired $x_0$ value must be provided for this use-case.
+The an iterative solve of the Richardson extrapolation will then be attempted for the given points.
+This is seen in examples `general_example.txt` and `gen_match_es_example.txt`.
