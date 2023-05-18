@@ -28,7 +28,7 @@ CONTAINS
     REAL(8) :: p,rich
     LOGICAL :: valid_p=.FALSE.
 
-    DO i=6,6
+    DO i=6,data_size
       WRITE(*,*)'i',i
       CALL comp_rich_point_gen(in_x(i-2:i),in_y(i-2:i),p,rich)
       IF(p .GT. 0.0D0 .AND. .NOT. ISNAN(p))THEN
@@ -49,12 +49,18 @@ CONTAINS
     REAL(8), INTENT(OUT) :: presult,fresult
     REAL(8) :: cval(2),pval(2),fval(2)
     REAL(8) :: cerror,perror,ferror
-    INTEGER :: i,order(3)
+    INTEGER :: i,order(3),temp_i,switch_1,switch_2
 
     !get order of furthest from 1 to closest
     order(1)=1
     order(2)=2
     order(3)=3
+    !swap 2 and 3 if distance for 2 is 1
+    IF(ABS(x_data(2)-x0-1) .LE. 1e-12)THEN
+      order(2)=3
+      order(3)=2
+    ENDIF
+    WRITE(*,*)order
 
     !initial guesses
     cval=1
@@ -67,28 +73,37 @@ CONTAINS
       pval(1)=pval(2)
       fval(1)=fval(2)
       !compute current iteration values
-      write(*,*)'point1',cval(2),pval(2),fval(2)
-      cval(2)=(y_data(1)-fval(2))/((x_data(1)-x0)**pval(2))
-      write(*,*)'point2',cval(2),pval(2),fval(2)
-      pval(2)=LOG((y_data(2)-fval(2))/cval(2))/LOG(x_data(2)-x0)
-      write(*,*)'point3',cval(2),pval(2),fval(2)
-      fval(2)=y_data(3)-cval(2)*(x_data(3)-x0)**pval(2)
-      write(*,*)'point4'
+      cval(2)=(y_data(order(1))-fval(2))/((x_data(order(1))-x0)**pval(2))
+      pval(2)=LOG((y_data(order(2))-fval(2))/cval(2))/LOG(x_data(order(2))-x0)
+      fval(2)=y_data(order(3))-cval(2)*(x_data(order(3))-x0)**pval(2)
       !compute errors
-      cerror=(cval(2)-cval(1))/cval(2)
-      perror=(pval(2)-pval(1))/pval(2)
-      ferror=(fval(2)-fval(1))/fval(2)
-      WRITE(*,*)i,cval(2),pval(2),fval(2),cerror,perror,ferror
+      cerror=ABS((cval(2)-cval(1))/cval(2))
+      perror=ABS((pval(2)-pval(1))/pval(2))
+      ferror=ABS((fval(2)-fval(1))/fval(2))
+      WRITE(*,*)i,cval(2),pval(2),fval(2)
       IF(cerror .LE. 1e-16 .AND. perror .LE. 1e-16 .AND. ferror .LE. 1e-16)EXIT
       !check to see if a value becomes invalid
-      IF(ISNAN(fval(2)))THEN
-        pval=0
-        fval=0
-        cval=0
-        EXIT
+      IF(ISNAN(fval(2)) .OR. ISNAN(pval(2)) .OR. ISNAN(cval(2)))THEN
+        pval(2)=pval(1)
+        fval(2)=fval(1)
+        cval(2)=cval(1)
+        !perturb order
+        switch_1=1+FLOOR(RAND()*3)
+        switch_2=1+FLOOR(RAND()*3)
+        temp_i=order(switch_1)
+        order(switch_1)=order(switch_2)
+        order(switch_2)=temp_i
+        IF(ABS(x_data(order(2))-x0-1) .LE. 1e-12)THEN
+          temp_i=order(2)
+          order(2)=order(3)
+          order(3)=temp_i
+        ENDIF
+        write(*,*)order,switch_1,switch_2
+        CYCLE
       ENDIF
     ENDDO
     WRITE(*,*)cval(2),pval(2),fval(2)
+    stop 'testing'
     presult=pval(2)
     fresult=fval(2)
   ENDSUBROUTINE comp_rich_point_gen
