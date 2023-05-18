@@ -30,7 +30,7 @@ CONTAINS
 
     DO i=3,data_size
       CALL comp_rich_point_gen(in_x(i-2:i),in_y(i-2:i),p,rich)
-      IF(p .GT. 0.0D0 .AND. .NOT. ISNAN(p))THEN
+      IF(ABS(p) .GT. 0.0D0 .AND. .NOT. ISNAN(p))THEN
         valid_p=.TRUE.
         rich_results(i)=rich
         p_results(i)=p
@@ -61,7 +61,7 @@ CONTAINS
     cval=1
     pval=1
     fval=y_data(3)+(y_data(3)-y_data(2))*(x_data(3)/x_data(2))
-    DO i=1,1000
+    DO i=1,10000
       !save previous iteration values
       cval(1)=cval(2)
       pval(1)=pval(2)
@@ -113,7 +113,7 @@ CONTAINS
       ENDIF
     ENDDO
     !check if it actually converged
-    IF(i .GE. 999)THEN
+    IF(i .GE. 9999)THEN
       cval=0
       pval=0
       fval=0
