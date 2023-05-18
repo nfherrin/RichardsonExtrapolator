@@ -81,7 +81,7 @@ CONTAINS
       WRITE(*,*)i,cval(2),pval(2),fval(2),cerror,perror,ferror
       IF(cerror .LE. 1e-16 .AND. perror .LE. 1e-16 .AND. ferror .LE. 1e-16)EXIT
       !check to see if a value becomes invalid
-      IF(pval(2) .LE. 0.0 .OR. ISNAN(fval(2)))THEN
+      IF(ISNAN(fval(2)))THEN
         pval=0
         fval=0
         cval=0
