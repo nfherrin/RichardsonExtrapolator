@@ -28,8 +28,7 @@ CONTAINS
     REAL(8) :: p,rich
     LOGICAL :: valid_p=.FALSE.
 
-    DO i=6,data_size
-      WRITE(*,*)'i',i
+    DO i=3,data_size
       CALL comp_rich_point_gen(in_x(i-2:i),in_y(i-2:i),p,rich)
       IF(p .GT. 0.0D0 .AND. .NOT. ISNAN(p))THEN
         valid_p=.TRUE.
@@ -38,9 +37,6 @@ CONTAINS
       ENDIF
     ENDDO
     IF(.NOT. valid_p)STOP 'No real p values computed. System is likely not in asymptotic region.'
-    WRITE(*,*)rich_results
-    WRITE(*,*)p_results
-    STOP 'compute_rich_general not complete'
   ENDSUBROUTINE compute_rich_general
 
 
@@ -60,13 +56,11 @@ CONTAINS
       order(2)=3
       order(3)=2
     ENDIF
-    WRITE(*,*)order
 
     !initial guesses
     cval=1
     pval=1
     fval=y_data(3)+(y_data(3)-y_data(2))*(x_data(3)/x_data(2))
-    WRITE(*,*)cval(2),pval(2),fval(2)
     DO i=1,1000
       !save previous iteration values
       cval(1)=cval(2)
@@ -80,9 +74,8 @@ CONTAINS
       cerror=ABS((cval(2)-cval(1))/cval(2))
       perror=ABS((pval(2)-pval(1))/pval(2))
       ferror=ABS((fval(2)-fval(1))/fval(2))
-      WRITE(*,*)i,cval(2),pval(2),fval(2)
       IF(cerror .LE. 1e-16 .AND. perror .LE. 1e-16 .AND. ferror .LE. 1e-16)EXIT
-      !check to see if a value becomes invalid
+      !check to see if a value becomes nans
       IF(ISNAN(fval(2)) .OR. ISNAN(pval(2)) .OR. ISNAN(cval(2)))THEN
         pval(2)=pval(1)
         fval(2)=fval(1)
@@ -98,12 +91,33 @@ CONTAINS
           order(2)=order(3)
           order(3)=temp_i
         ENDIF
-        write(*,*)order,switch_1,switch_2
+        CYCLE
+      ENDIF
+      !cycle if pval gets out of control
+      IF(ABS(pval(2)) .GT. 400 .OR. ABS(cval(2)) .GE. 1e+20)THEN
+        cval=1
+        pval=1
+        fval=y_data(3)+(y_data(3)-y_data(2))*(x_data(3)/x_data(2))
+        !perturb order
+        switch_1=1+FLOOR(RAND()*3)
+        switch_2=1+FLOOR(RAND()*3)
+        temp_i=order(switch_1)
+        order(switch_1)=order(switch_2)
+        order(switch_2)=temp_i
+        IF(ABS(x_data(order(2))-x0-1) .LE. 1e-12)THEN
+          temp_i=order(2)
+          order(2)=order(3)
+          order(3)=temp_i
+        ENDIF
         CYCLE
       ENDIF
     ENDDO
-    WRITE(*,*)cval(2),pval(2),fval(2)
-    stop 'testing'
+    !check if it actually converged
+    IF(i .GE. 999)THEN
+      cval=0
+      pval=0
+      fval=0
+    ENDIF
     presult=pval(2)
     fresult=fval(2)
   ENDSUBROUTINE comp_rich_point_gen
