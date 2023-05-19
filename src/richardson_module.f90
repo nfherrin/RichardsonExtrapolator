@@ -40,19 +40,28 @@ CONTAINS
   ENDSUBROUTINE compute_rich_general
 
 
-  SUBROUTINE comp_rich_point_gen(x_data,y_data,presult,fresult)
-    REAL(8), INTENT(IN) :: x_data(3),y_data(3)
+  SUBROUTINE comp_rich_point_gen(x_in,y_data,presult,fresult)
+    REAL(8), INTENT(IN) :: x_in(3),y_data(3)
     REAL(8), INTENT(OUT) :: presult,fresult
     REAL(8) :: cval(2),pval(2),fval(2)
+    REAL(8) :: x_data(3),x00
     REAL(8) :: cerror,perror,ferror
     INTEGER :: i,order(3),temp_i,switch_1,switch_2
+
+    x00=x0
+    x_data=x_in
+    !make sure we reverse of the data is reversed
+    IF(x_in(1) .LE. x0)THEN
+      x00=-x0
+      x_data=-x_in
+    ENDIF
 
     !get order of furthest from 1 to closest
     order(1)=1
     order(2)=2
     order(3)=3
     !swap 2 and 3 if distance for 2 is 1
-    IF(ABS(x_data(2)-x0-1) .LE. 1e-12)THEN
+    IF(ABS(x_data(2)-x00-1) .LE. 1e-12)THEN
       order(2)=3
       order(3)=2
     ENDIF
@@ -67,9 +76,9 @@ CONTAINS
       pval(1)=pval(2)
       fval(1)=fval(2)
       !compute current iteration values
-      cval(2)=(y_data(order(1))-fval(2))/((x_data(order(1))-x0)**pval(2))
-      pval(2)=LOG((y_data(order(2))-fval(2))/cval(2))/LOG(x_data(order(2))-x0)
-      fval(2)=y_data(order(3))-cval(2)*(x_data(order(3))-x0)**pval(2)
+      cval(2)=(y_data(order(1))-fval(2))/((x_data(order(1))-x00)**pval(2))
+      pval(2)=LOG((y_data(order(2))-fval(2))/cval(2))/LOG(x_data(order(2))-x00)
+      fval(2)=y_data(order(3))-cval(2)*(x_data(order(3))-x00)**pval(2)
       !compute errors
       cerror=ABS((cval(2)-cval(1))/cval(2))
       perror=ABS((pval(2)-pval(1))/pval(2))
@@ -86,7 +95,7 @@ CONTAINS
         temp_i=order(switch_1)
         order(switch_1)=order(switch_2)
         order(switch_2)=temp_i
-        IF(ABS(x_data(order(2))-x0-1) .LE. 1e-12)THEN
+        IF(ABS(x_data(order(2))-x00-1) .LE. 1e-12)THEN
           temp_i=order(2)
           order(2)=order(3)
           order(3)=temp_i
@@ -104,7 +113,7 @@ CONTAINS
         temp_i=order(switch_1)
         order(switch_1)=order(switch_2)
         order(switch_2)=temp_i
-        IF(ABS(x_data(order(2))-x0-1) .LE. 1e-12)THEN
+        IF(ABS(x_data(order(2))-x00-1) .LE. 1e-12)THEN
           temp_i=order(2)
           order(2)=order(3)
           order(3)=temp_i
