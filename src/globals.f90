@@ -1,3 +1,8 @@
+!RichardsonExtrapolator is licensed under the MIT License.
+!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++!
+!> @brief Global variables.
+!> @author Nicholas Herring
+!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++!
 MODULE globals
   IMPLICIT NONE
 

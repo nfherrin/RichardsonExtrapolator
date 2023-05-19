@@ -1,3 +1,8 @@
+!RichardsonExtrapolator is licensed under the MIT License.
+!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++!
+!> @brief Primary driver module to perform all richardson extrapolations.
+!> @author Nicholas Herring
+!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++!
 PROGRAM richardson_extrapolator
   USE globals
   USE input_module

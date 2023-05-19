@@ -1,3 +1,8 @@
+!RichardsonExtrapolator is licensed under the MIT License.
+!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++!
+!> @brief Richardson Extrapolation solvers.
+!> @author Nicholas Herring
+!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++!
 MODULE richardson_module
   IMPLICIT NONE
   PRIVATE
@@ -5,7 +10,13 @@ MODULE richardson_module
 
 CONTAINS
 
-  !compute the richardson extrapolation for a given rho and set of 3 y points
+  !---------------------------------------------------------------------------------------------------
+  !> @brief This subroutine computes the richardson extrapolation for a given rho and set of 3 y points
+  !> @param rho_val - Rho value for spacing of point distances
+  !> @param y_p - y points to take the extrapolation of
+  !> @param rich_comp - computed richardson extrapolation value. 0 when unsuccessful
+  !> @param p_comp - computed convergence rate value. 0 when unsuccessful
+  !>
   SUBROUTINE comp_rich_es(rho_val,y_p,rich_comp,p_comp)
     REAL(8), INTENT(IN) :: rho_val,y_p(3)
     REAL(8), INTENT(OUT) :: rich_comp,p_comp
@@ -21,6 +32,14 @@ CONTAINS
     ENDIF
   ENDSUBROUTINE comp_rich_es
 
+  !---------------------------------------------------------------------------------------------------
+  !> @brief This subroutine computes a generally spaced richardson extrapolation
+  !> @param x_p - x points for each y point to take the extrapolation of
+  !> @param x0_p - x goal point we are computing to
+  !> @param y_p - y points to take the extrapolation of
+  !> @param rich_comp - computed richardson extrapolation value. 0 when unsuccessful
+  !> @param p_comp - computed convergence rate value. 0 when unsuccessful
+  !>
   SUBROUTINE comp_rich_gs(x_p,x0_p,y_p,rich_comp,p_comp)
     REAL(8), INTENT(IN) :: x_p(3),y_p(3),x0_p
     REAL(8), INTENT(OUT) :: rich_comp,p_comp

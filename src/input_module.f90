@@ -1,3 +1,8 @@
+!RichardsonExtrapolator is licensed under the MIT License.
+!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++!
+!> @brief Input functions.
+!> @author Nicholas Herring
+!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++!
 MODULE input_module
   USE globals
   IMPLICIT NONE
