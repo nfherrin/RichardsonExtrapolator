@@ -9,7 +9,11 @@ PROGRAM richardson_extrapolator
 
   CALL read_input_file()
 
-  CALL compute_rich_rho()
+  IF(input_type .EQ. 'equal_space')THEN
+    CALL compute_rich_rho()
+  ELSEIF(input_type .EQ. 'general_space')THEN
+    CALL compute_rich_general()
+  ENDIF
 
   CALL output_rich()
 

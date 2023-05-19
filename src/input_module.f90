@@ -29,16 +29,31 @@ CONTAINS
       STOP 'error opening file!'
     ENDIF
 
-    READ(21,*)t_char,rho
+    READ(21,*)input_type
+    IF(input_type .EQ. 'equal_space')THEN
+      READ(21,*)t_char,rho
+    ELSE
+      READ(21,*)t_char,x0
+    ENDIF
     READ(21,*)t_char,data_size
     IF(data_size .LT. 3)STOP 'Richardson extrapolation requires at least 3 data points! Less than that given'
-    ALLOCATE(indata(data_size),rich_results(data_size),p_results(data_size))
-    indata=0.0
+    ALLOCATE(in_y(data_size),rich_results(data_size),p_results(data_size))
+    IF(input_type .EQ. 'general_space')THEN
+      ALLOCATE(in_x(data_size))
+    ENDIF
+    in_y=0.0
     rich_results=0.0
     p_results=0.0
 
     DO i=1,data_size
-      READ(21,*,IOSTAT=t_int)indata(i)
+      IF(input_type .EQ. 'equal_space')THEN
+        READ(21,*,IOSTAT=t_int)in_y(i)
+      ELSEIF(input_type .EQ. 'general_space')THEN
+        READ(21,*,IOSTAT=t_int)in_x(i),in_y(i)
+      ELSE
+        WRITE(*,'(3A)')'ERROR: ',TRIM(input_type),' not  a valid input type'
+        STOP 'Fatal Error'
+      ENDIF
       IF(t_int .NE. 0)STOP 'end of file reached before all data found. is the data size right?'
     ENDDO
 

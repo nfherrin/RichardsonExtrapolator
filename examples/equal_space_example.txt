@@ -1,3 +1,4 @@
+equal_space
 rho 0.5
 data 8
 0.955419770392090
