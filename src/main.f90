@@ -26,7 +26,7 @@ PROGRAM richardson_extrapolator
       CALL comp_rich_gs(in_x(i-2:i),x0,in_y(i-2:i),rich_results(i),p_results(i))
     ENDIF
     !check if there has been a valid p value
-    IF(p_results(i) .GT. 0)valid_p=.TRUE.
+    IF(ABS(p_results(i)) .GT. 0)valid_p=.TRUE.
   ENDDO
   IF(.NOT. valid_p)STOP 'No real p values computed. System is likely not in asymptotic region.'
 
