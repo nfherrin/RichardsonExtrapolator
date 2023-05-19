@@ -65,4 +65,3 @@ $(EXEC_FILE): $(OBJ)
 main.o : globals.o input_module.o output_module.o richardson_module.o
 input_module.o : globals.o
 output_module.o : globals.o
-richardson_module.o : globals.o

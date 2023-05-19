@@ -8,4 +8,5 @@ This is seen in example `equal_space_example.txt` and `es_match_gen_example.txt`
 Alternatively, if the spacing between the points is not constant, then a list of $x_i$ and $f_i$ pairs can be given (in order of $x_i$ furthest from $x_0$ to closest to $x_0$).
 Additionally, the desired $x_0$ value must be provided for this use-case.
 Then an iterative solve of the Richardson extrapolation will then be attempted for the given points.
+Note that the iterative solution of the extrapolation is not likely to succeed outside of the asymptotic region.
 This is seen in examples `general_example.txt` and `gen_match_es_example.txt`.
