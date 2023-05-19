@@ -12,6 +12,7 @@ CONTAINS
 
   !---------------------------------------------------------------------------------------------------
   !> @brief This subroutine computes the richardson extrapolation for a given rho and set of 3 y points
+  !>         solves the extrapolation using the standard method for equal spaced richardson extrapolation
   !> @param rho_val - Rho value for spacing of point distances
   !> @param y_p - y points to take the extrapolation of
   !> @param rich_comp - computed richardson extrapolation value. 0 when unsuccessful
@@ -34,6 +35,7 @@ CONTAINS
 
   !---------------------------------------------------------------------------------------------------
   !> @brief This subroutine computes a generally spaced richardson extrapolation
+  !>         solves the extrapolation using a "Gauss-Seidel"-like iterative scheme
   !> @param x_p - x points for each y point to take the extrapolation of
   !> @param x0_p - x goal point we are computing to
   !> @param y_p - y points to take the extrapolation of
